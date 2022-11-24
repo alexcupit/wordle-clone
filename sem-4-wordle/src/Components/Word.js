@@ -1,57 +1,65 @@
-import Letter from './Letter';
-import Submit from './Submit';
-import { useState } from 'react';
+import Letter from "./Letter";
+import { useState } from "react";
 
 function Word({ wordId, name }) {
-  const [letterChecks, setLetterChecks] = useState([
+  const [letterValues, setLetterValues] = useState([
     {
-      letterId: 'letter1',
-      letterState: 'blank',
+      letterId: 0,
+      letterValue: "",
     },
     {
-      letterId: 'letter2',
-      letterState: 'blank',
+      letterId: 1,
+      letterValue: "",
     },
     {
-      letterId: 'letter3',
-      letterState: 'blank',
+      letterId: 2,
+      letterValue: "",
     },
     {
-      letterId: 'letter4',
-      letterState: 'blank',
+      letterId: 3,
+      letterValue: "",
     },
     {
-      letterId: 'letter5',
-      letterState: 'blank',
+      letterId: 4,
+      letterValue: "",
     },
   ]);
 
   function submitHandler(event) {
-    console.log(event);
+    setLetterValues((currentLetterValues) => {
+      const newLetterValues = currentLetterValues.map((letter) => {
+        const newLetter = { ...letter };
+        newLetter.letterValue = event.target[newLetter.letterId].value;
+        return newLetter;
+      });
+      console.log(newLetterValues);
+      return newLetterValues;
+    });
   }
 
   return (
     <form
-      action='/'
-      className='word'
+      action="/"
+      className="word"
       word-id={wordId}
       onSubmit={(event) => {
-        submitHandler(event);
         event.preventDefault();
+        return submitHandler(event);
       }}
     >
-      {letterChecks.map((letterCheck) => {
+      {letterValues.map(({ letterId, letterValue }) => {
         return (
           <Letter
-            key={letterCheck.letterId}
-            letter-id={`${wordId}-${letterCheck.letterId}`}
-            letter-state={letterCheck.letterState}
+            key={letterId}
+            letterId={letterId}
+            letterValue={letterValue}
+            name={name}
           />
         );
       })}
 
       {/* <Submit submitId={`submit-${wordId}`} /> */}
-      <button type='submit' className='submit' submit-id={`submit-${wordId}`}>
+      <button type="submit" className="submit" submit-id={`submit-${wordId}`}>
         Submit
       </button>
     </form>
