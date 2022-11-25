@@ -1,70 +1,32 @@
 import Word from './Word';
-import { useState } from 'react';
 
-function GameBoard() {
-  const [name, setName] = useState(
-    names[Math.floor(Math.random() * names.length)]
-  );
-  function chooseName() {
-    setName(names[Math.floor(Math.random() * names.length)]);
-  }
+function GameBoard({
+  wordsGuessed,
+  setWordsGuessed,
+  setVictory,
+  name,
+  victory,
+}) {
+  const wordIds = [0, 1, 2, 3, 4, 5];
   return (
     <div id='gameboard'>
-      <p>{name}</p>
-      <Word wordId='word1' name={name} />
-      <Word wordId='word2' name={name} />
-      <Word wordId='word3' name={name} />
-      <Word wordId='word4' name={name} />
-      <Word wordId='word5' name={name} />
-      <Word wordId='word6' name={name} />
-      <button
-        onClick={() => {
-          chooseName();
-        }}
-      >
-        New Name
-      </button>
+      {/* <p>{name}</p> */}
+
+      {wordIds.map((wordId) => {
+        return (
+          <Word
+            wordId={wordId}
+            key={wordId}
+            name={name}
+            setWordsGuessed={setWordsGuessed}
+            wordsGuessed={wordsGuessed}
+            setVictory={setVictory}
+            victory={victory}
+          />
+        );
+      })}
     </div>
   );
 }
 
 export default GameBoard;
-
-const names = [
-  'kevin',
-  'adamg',
-  'alexc',
-  'alexw',
-  'alvov',
-  'angel',
-  'callu',
-  'carri',
-  'cyrus',
-  'danja',
-  'darss',
-  'daver',
-  'david',
-  'eddyk',
-  'ellam',
-  'erina',
-  'emily',
-  'felip',
-  'gjabo',
-  'hadri',
-  'isaac',
-  'jackh',
-  'julia',
-  'joeva',
-  'kazee',
-  'liamd',
-  'matts',
-  'olive',
-  'onesi',
-  'paulr',
-  'razin',
-  'rosep',
-  'sarah',
-  'yasir',
-  'yousi',
-  'zakar',
-];
