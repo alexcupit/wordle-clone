@@ -2,63 +2,50 @@ import Letter from "./Letter";
 import { useState } from "react";
 
 function Word({ wordId, name }) {
-  const [letterValues, setLetterValues] = useState([
-    {
-      letterId: 0,
-      letterValue: "",
-    },
-    {
-      letterId: 1,
-      letterValue: "",
-    },
-    {
-      letterId: 2,
-      letterValue: "",
-    },
-    {
-      letterId: 3,
-      letterValue: "",
-    },
-    {
-      letterId: 4,
-      letterValue: "",
-    },
+  const [letterValues, setLetterValues] = useState(["", "", "", "", ""]);
+  const [letterColors, setLetterColors] = useState([
+    "blank",
+    "blank",
+    "blank",
+    "blank",
+    "blank",
   ]);
 
   function submitHandler(event) {
-    setLetterValues((currentLetterValues) => {
-      const newLetterValues = currentLetterValues.map((letter) => {
-        const newLetter = { ...letter };
-        newLetter.letterValue = event.target[newLetter.letterId].value;
-        return newLetter;
-      });
-      console.log(newLetterValues);
-      return newLetterValues;
+    event.preventDefault();
+    const nameArray = name.split("");
+    const newLetterColors = [
+      "incorrect",
+      "incorrect",
+      "incorrect",
+      "incorrect",
+      "incorrect",
+    ];
+
+    nameArray.forEach((letter, index) => {
+      if (letter === letterValues[index]) {
+        newLetterColors[index] = "correct";
+      } else if (letterValues.includes(letter)) {
+        const indexToUpdate = letterValues.indexOf(letter);
+        newLetterColors[indexToUpdate] = "includes";
+      }
     });
+    setLetterColors(newLetterColors);
   }
 
   return (
-    <form
-      action="/"
-      className="word"
-      word-id={wordId}
-      onSubmit={(event) => {
-        event.preventDefault();
-        return submitHandler(event);
-      }}
-    >
-      {letterValues.map(({ letterId, letterValue }) => {
+    <form action="/" className="word" word-id={wordId} onSubmit={submitHandler}>
+      {letterValues.map((letter, letterId) => {
         return (
           <Letter
             key={letterId}
             letterId={letterId}
-            letterValue={letterValue}
-            name={name}
+            setLetterValues={setLetterValues}
+            letterColor={letterColors[letterId]}
           />
         );
       })}
 
-      {/* <Submit submitId={`submit-${wordId}`} /> */}
       <button type="submit" className="submit" submit-id={`submit-${wordId}`}>
         Submit
       </button>

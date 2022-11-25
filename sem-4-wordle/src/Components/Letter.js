@@ -1,39 +1,34 @@
-function Letter({ letterId, letterValue, name }) {
-  let letterState = "blank";
+import { useState } from "react";
 
-  function letterCheck(letterId, letterValue) {
-    if (letterValue === "") {
-      return (letterState = "blank");
+function Letter({ letterId, setLetterValues, letterColor }) {
+  const [letterInput, setLetterInput] = useState("");
+
+  const checkLetterValidity = (event) => {
+    if (!/[a-zA-Z]/.test(event.key)) {
+      event.preventDefault();
     }
-    if (name[letterId] === letterValue.toLowerCase()) {
-      letterState = "correct";
-    } else if (name.includes(letterValue.toLowerCase())) {
-      letterState = "includes";
-    } else {
-      letterState = "incorrect";
-    }
-    return letterState;
-  }
+  };
+
+  const handleLetterChange = (event) => {
+    const newLetter = event.target.value.toLowerCase();
+    setLetterInput(newLetter);
+    setLetterValues((currentLetterValues) => {
+      const newLetterValues = [...currentLetterValues];
+      newLetterValues[letterId] = newLetter;
+      return newLetterValues;
+    });
+  };
 
   return (
     <input
       type="text"
-      className={`letter ${letterCheck(letterId, letterValue)}`}
+      className={`letter ${letterColor}`}
       letter-id={letterId}
       maxLength="1"
-      letter-value={letterValue}
-      onKeyDown={(e) => {
-        if (!/[a-zA-Z]/.test(e.key)) {
-          e.preventDefault();
-        }
-      }}
+      onKeyDown={checkLetterValidity}
+      onChange={handleLetterChange}
+      value={letterInput}
       required
-      //   onKeyPress={(event) => {
-      //     return (
-      //       (event.charCode >= 65 && event.charCode <= 90) ||
-      //       (event.charCode >= 97 && event.charCode <= 122)
-      //     );
-      //   }}
     ></input>
   );
 }
