@@ -3,12 +3,14 @@ import Header from './Components/Header.js';
 import GameBoard from './Components/GameBoard.js';
 import { useState } from 'react';
 import Results from './Components/Results';
+import words from './data/words-list';
 
 function App() {
   const [wordsGuessed, setWordsGuessed] = useState(0);
   const [victory, setVictory] = useState(false);
+  // this app was initially built to feature the names of members from our seminar group, but using a valid word list. For my portfolio, the chosen word is now selected from that valid word list and names are not used to make it more accessible.
   const [name, setName] = useState(
-    names[Math.floor(Math.random() * names.length)]
+    words[Math.floor(Math.random() * words.length)]
   );
 
   return (
